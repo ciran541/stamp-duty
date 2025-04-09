@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore Stamp Duty Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <div class="form-group">
+                <label for="propertyValue">Property Valuation <span class="required">*</span></label>
+                <div class="input-group">
+                    <div class="currency-prefix">SGD</div>
+                    <input type="text" id="propertyValue" placeholder="500,000" oninput="formatCurrency(this)" required>
+                </div>
+                <div id="propertyValueError" class="error-message hidden">Property value must be at least SGD100,000</div>
+            </div>
+
+            <div class="form-group">
+                <label>Ownership</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="purchaseType" value="single" onchange="togglePartnerStatus()" checked> Single</label>
+                    <label><input type="radio" name="purchaseType" value="jointMarried" onchange="togglePartnerStatus()"> Joint (Married)</label>
+                    <label><input type="radio" name="purchaseType" value="jointNotMarried" onchange="togglePartnerStatus()"> Joint (Not Married)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Residency Status</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="yourStatus" value="singaporean" checked> Singaporean</label>
+                    <label><input type="radio" name="yourStatus" value="permanentResident"> Permanent Resident</label>
+                    <label><input type="radio" name="yourStatus" value="foreigner"> Foreigner</label>
+                </div>
+            </div>
+
+            <div class="form-group partner-status hidden">
+                <label>Partner's Status</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="partnerStatus" value="singaporean" checked> Singaporean</label>
+                    <label><input type="radio" name="partnerStatus" value="permanentResident"> Permanent Resident</label>
+                    <label><input type="radio" name="partnerStatus" value="foreigner"> Foreigner</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Existing Properties Owned</label>
+                <div class="counter">
+                    <button class="counter-btn" onclick="decrementCounter()">−</button>
+                    <div class="counter-value" id="propertyCount">0</div>
+                    <button class="counter-btn" onclick="incrementCounter()">+</button>
+                </div>
+            </div>
+
+            <button class="calculate-btn" id="calculateBtn" onclick="calculateStampDuty()">Calculate Stamp Duty</button>
+<button class="calculate-again-btn hidden" id="calculateAgainBtn" onclick="calculateStampDuty()">Calculate</button>
+        </div>
+
+        <div class="result-section">
+            <div id="initialMessage">
+                <div class="initial-state">
+                    <div class="initial-icon">
+                    <img src="https://theloanconnection.com.sg/wp-content/uploads/2025/04/stamp_duty_icon.png" alt="Calculator icon">
+                    </div>
+                    <div class="initial-content">
+                        <h3>Calculate Your Stamp Duty</h3>
+                        <p>Provide your property details to receive an instant estimate of your stamp duty.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="summaryResult" class="summary-container hidden">
+                <div class="summary-header">
+                    <div class="summary-title">Your Stamp Duty Summary</div>
+                </div>
+                <div class="summary-card">
+                    <div class="property-value">
+                        <span class="label">Property Value</span>
+                        <span class="value" id="summaryPropertyValue">SGD 0</span>
+                    </div>
+                    
+                    <div class="duty-breakdown">
+                        <div class="duty-item">
+                            <div class="duty-label">
+                                <div class="duty-icon bsd-icon">BSD</div>
+                                <div class="duty-name">Buyer Stamp Duty</div>
+                            </div>
+                            <div class="duty-amount" id="summaryBSD">SGD 0</div>
+                        </div>
+                        
+                        <div class="duty-item">
+                            <div class="duty-label">
+                                <div class="duty-icon absd-icon">ABSD</div>
+                                <div class="duty-name">Additional Buyer <br>Stamp Duty</div>
+                            </div>
+                            <div class="duty-amount" id="summaryABSD">SGD 0</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div class="progress-segment bsd-progress" id="bsdProgress"></div>
+                            <div class="progress-segment absd-progress" id="absdProgress"></div>
+                        </div>
+                        <div class="progress-legend">
+                            <div class="legend-item">
+                                <div class="legend-color bsd-color"></div>
+                                <div class="legend-text">
+                                    <div class="legend-label">BSD</div>
+                                    <div class="legend-value" id="bsdPercentage">0%</div>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color absd-color"></div>
+                                <div class="legend-text">
+                                    <div class="legend-label">ABSD</div>
+                                    <div class="legend-value" id="absdPercentage">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total-amount">
+                        <span class="label">Total Stamp Duty</span>
+                        <span class="value" id="totalDutyAmount">SGD 0</span>
+                    </div>
+
+                    <div class="rate-badge">
+                        <span class="badge-label">ABSD Rate</span>
+                        <span class="badge-value" id="summaryABSDRate">0%</span>
+                        <div class="info-tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Different ABSD rates may apply based on your residency status and number of existing properties.</span>
+                </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
