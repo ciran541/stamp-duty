@@ -56,7 +56,7 @@ function checkFormCompletion() {
     const calculateBtn = document.getElementById('calculateBtn');
     const value = parseInt(propertyValue.replace(/,/g, ''));
     
-    if (propertyValue && !isNaN(value) && value >= 150000) {
+    if (propertyValue && !isNaN(value) && value >= 100000) {
         calculateBtn.style.backgroundColor = '#052D4A';
         calculateBtn.disabled = false;
     } else {
