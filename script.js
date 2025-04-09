@@ -215,23 +215,15 @@ function calculateStampDuty() {
     const absd = calculateABSD(propertyValue);
     const totalDuty = bsd + absd;
     
-    // Calculate percentages for progress bar
-    const bsdPercentage = (bsd / totalDuty) * 100;
-    const absdPercentage = (absd / totalDuty) * 100;
-    
-    // Update progress bar
-    document.getElementById('bsdProgress').style.width = `${bsdPercentage}%`;
-    document.getElementById('absdProgress').style.width = `${absdPercentage}%`;
-    
-    // Update percentage labels
-    document.getElementById('bsdPercentage').textContent = `${Math.round(bsdPercentage)}%`;
-    document.getElementById('absdPercentage').textContent = `${Math.round(absdPercentage)}%`;
-    
     document.getElementById('initialMessage').classList.add('hidden');
     document.getElementById('summaryResult').classList.remove('hidden');
     document.getElementById('calculateBtn').classList.add('hidden');
     document.getElementById('calculateAgainBtn').classList.remove('hidden');
     
+    updateSummary(propertyValue, bsd, absd, totalDuty);
+}
+
+function updateSummary(propertyValue, bsd, absd, totalDuty) {
     document.getElementById('summaryPropertyValue').textContent = 'SGD ' + formatNumber(propertyValue);
     document.getElementById('summaryBSD').textContent = 'SGD ' + formatNumber(Math.round(bsd));
     document.getElementById('summaryABSD').textContent = 'SGD ' + formatNumber(Math.round(absd));
