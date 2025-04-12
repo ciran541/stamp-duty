@@ -265,21 +265,3 @@ window.addEventListener('DOMContentLoaded', function() {
 
     checkFormCompletion();
 });
-
-// Add this to your Vercel app JavaScript
-function notifyParentHeight() {
-    const height = document.body.scrollHeight;
-    window.parent.postMessage({
-      type: 'resize',
-      height: height
-    }, '*'); // In production, replace '*' with your WordPress domain for security
-  }
-  
-  // Call when content changes, such as after calculation
-  document.getElementById('calculateButton').addEventListener('click', function() {
-    // Wait for results to render
-    setTimeout(notifyParentHeight, 300);
-  });
-  
-  // Also call on load
-  window.addEventListener('load', notifyParentHeight);
