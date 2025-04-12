@@ -265,3 +265,28 @@ window.addEventListener('DOMContentLoaded', function() {
 
     checkFormCompletion();
 });
+
+// Function to send the current height to the parent window
+function sendHeightToParent() {
+    // Get the current height of the document
+    const height = document.body.scrollHeight;
+    
+    // Send message to parent (WordPress) with the height
+    if (window.parent) {
+        window.parent.postMessage({
+            type: 'resize-iframe',
+            height: height
+        }, '*');
+    }
+}
+
+// Initialize the resizer on page load
+window.addEventListener('load', function() {
+    // Send initial height
+    sendHeightToParent();
+    
+    // Set up a window resize listener
+    window.addEventListener('resize', function() {
+        sendHeightToParent();
+    });
+});
