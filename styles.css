@@ -37,6 +37,8 @@ body {
     padding: 24px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
 }
 
 h2 {
@@ -194,39 +196,41 @@ select {
 
 .initial-state {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
     gap: 20px;
-    padding: 30px;
-    background: #f8f9fa;
+    padding: 40px 30px;
+    background: white;
     border-radius: 12px;
-    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .initial-icon {
-    flex-shrink: 0;
+    margin-bottom: 10px;
 }
 
 .initial-icon img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
 }
 
 .initial-content {
-    flex: 1;
+    max-width: 400px;
 }
 
 .initial-content h3 {
-    font-size: 18px;
+    font-size: 22px;
     color: #052D4A;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     font-weight: 600;
 }
 
 .initial-content p {
-    font-size: 14px;
+    font-size: 15px;
     color: #666;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .summary-container {
@@ -727,14 +731,21 @@ select {
     }
 
     .initial-state {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
+        padding: 30px 20px;
     }
 
     .initial-icon img {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .initial-content h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .initial-content p {
+        font-size: 14px;
     }
 
     .radio-group {
@@ -909,6 +920,24 @@ select {
 
     .legend-value {
         font-size: 12px;
+    }
+
+    .initial-state {
+        padding: 24px 16px;
+    }
+
+    .initial-icon img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .initial-content h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .initial-content p {
+        font-size: 13px;
     }
 }
 
