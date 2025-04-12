@@ -37,8 +37,6 @@ body {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    min-height: 100%;
 }
 
 h2 {
@@ -196,41 +194,39 @@ select {
 
 .initial-state {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 20px;
-    padding: 40px 30px;
-    background: white;
+    padding: 30px;
+    background: #f8f9fa;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 20px 0;
 }
 
 .initial-icon {
-    margin-bottom: 10px;
+    flex-shrink: 0;
 }
 
 .initial-icon img {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
 }
 
 .initial-content {
-    max-width: 400px;
+    flex: 1;
 }
 
 .initial-content h3 {
-    font-size: 22px;
+    font-size: 18px;
     color: #052D4A;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     font-weight: 600;
 }
 
 .initial-content p {
-    font-size: 15px;
+    font-size: 14px;
     color: #666;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .summary-container {
@@ -731,21 +727,14 @@ select {
     }
 
     .initial-state {
-        padding: 30px 20px;
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
     }
 
     .initial-icon img {
-        width: 60px;
-        height: 60px;
-    }
-
-    .initial-content h3 {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .initial-content p {
-        font-size: 14px;
+        width: 50px;
+        height: 50px;
     }
 
     .radio-group {
@@ -920,24 +909,6 @@ select {
 
     .legend-value {
         font-size: 12px;
-    }
-
-    .initial-state {
-        padding: 24px 16px;
-    }
-
-    .initial-icon img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .initial-content h3 {
-        font-size: 18px;
-        margin-bottom: 8px;
-    }
-
-    .initial-content p {
-        font-size: 13px;
     }
 }
 
