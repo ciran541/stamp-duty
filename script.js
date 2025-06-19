@@ -273,34 +273,150 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// function sendHeight() {
-//     const height = document.body.scrollHeight + 20;
-//     window.parent.postMessage({ type: 'setHeight', height: height }, '*');
-// }
-
-// const events = ['load', 'resize', 'input', 'change'];
-// events.forEach(event => {
-//     window.addEventListener(event, sendHeight);
-// });
-
-// const observer = new MutationObserver(function() {
-//     setTimeout(sendHeight, 50);
-// });
-// observer.observe(document.body, {
-//     childList: true,
-//     subtree: true,
-//     attributes: true,
-//     characterData: true
-// });
-
-// window.addEventListener('message', function(event) {
-//     if (event.data.type === 'requestHeight') {
-//         sendHeight();
-//     }
-// });
-
-// setTimeout(sendHeight, 300);
-
-// window.addEventListener('load', function() {
-//     setTimeout(sendHeight, 500);
-// });
+// Add this JavaScript code to your Vercel-hosted stamp duty calculator
+document.addEventListener('DOMContentLoaded', function() {
+    let lastSentHeight = 0;
+    let resizeTimeout = null;
+    
+    // Function to send height to parent window with extra padding
+    function sendHeight() {
+        try {
+            // Get the document height and add some extra padding (30px for mobile, 20px for desktop)
+            const isMobile = window.innerWidth <= 768;
+            const padding = isMobile ? 30 : 20;
+            const height = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            ) + padding;
+            
+            // Only send if height has changed significantly (more than 10px difference)
+            if (Math.abs(height - lastSentHeight) > 10) {
+                lastSentHeight = height;
+                
+                window.parent.postMessage({
+                    type: 'setHeight',
+                    height: height,
+                    timestamp: Date.now()
+                }, '*');
+                
+                console.log('Height sent to parent:', height);
+            }
+        } catch (error) {
+            console.error('Error sending height:', error);
+        }
+    }
+    
+    // Debounced version of sendHeight for rapid changes
+    function debouncedSendHeight() {
+        if (resizeTimeout) {
+            clearTimeout(resizeTimeout);
+        }
+        resizeTimeout = setTimeout(sendHeight, 50);
+    }
+    
+    // Send height on important events
+    const events = ['load', 'resize'];
+    events.forEach(event => {
+        window.addEventListener(event, debouncedSendHeight);
+    });
+    
+    // Send height on form interactions with immediate response
+    const interactionEvents = ['input', 'change', 'click'];
+    interactionEvents.forEach(event => {
+        document.addEventListener(event, function(e) {
+            // Small delay to ensure DOM changes are processed
+            setTimeout(sendHeight, 100);
+        });
+    });
+    
+    // Watch for DOM changes (for dynamic content like showing/hiding sections)
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        
+        mutations.forEach(function(mutation) {
+            // Check if the mutation affects layout
+            if (mutation.type === 'childList' || 
+                mutation.type === 'attributes' && 
+                ['class', 'style', 'hidden'].includes(mutation.attributeName)) {
+                shouldUpdate = true;
+            }
+        });
+        
+        if (shouldUpdate) {
+            // Small delay to ensure all DOM changes are completed
+            setTimeout(sendHeight, 150);
+        }
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class', 'style', 'hidden'],
+        characterData: false
+    });
+    
+    // Handle height requests from parent
+    window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'requestHeight') {
+            console.log('Height requested by parent');
+            sendHeight();
+        }
+    });
+    
+    // Initial height send with progressive delays to catch all loading stages
+    setTimeout(sendHeight, 100);   // Quick initial
+    setTimeout(sendHeight, 300);   // After initial render
+    setTimeout(sendHeight, 600);   // After potential async operations
+    setTimeout(sendHeight, 1000);  // Final check
+    
+    // Send after all images and assets are loaded
+    window.addEventListener('load', function() {
+        setTimeout(sendHeight, 200);
+        setTimeout(sendHeight, 500);
+    });
+    
+    // Handle font loading (if using web fonts)
+    if (document.fonts) {
+        document.fonts.ready.then(function() {
+            setTimeout(sendHeight, 100);
+        });
+    }
+    
+    // Monitor for common UI state changes
+    // Add specific selectors for your calculator's dynamic elements
+    const dynamicSelectors = [
+        '[data-toggle]',    // Bootstrap toggles
+        '.collapsible',     // Collapsible sections
+        '.tab-content',     // Tab content
+        '.accordion',       // Accordion sections
+        '.form-group',      // Form groups that might show/hide
+        '.result-section',  // Results that appear/disappear
+        '.error-message',   // Error messages
+        '.calculation-result' // Calculation results
+    ];
+    
+    dynamicSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            element.addEventListener('transitionend', debouncedSendHeight);
+            element.addEventListener('animationend', debouncedSendHeight);
+        });
+    });
+    
+    // Special handling for form field changes that might trigger layout changes
+    const formElements = document.querySelectorAll('input, select, textarea');
+    formElements.forEach(element => {
+        element.addEventListener('change', function() {
+            // Immediate height check for form changes
+            setTimeout(sendHeight, 50);
+            // Follow-up check in case there are delayed effects
+            setTimeout(sendHeight, 300);
+        });
+    });
+    
+    console.log('Stamp Duty Calculator dynamic height system initialized');
+});
