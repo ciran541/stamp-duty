@@ -220,9 +220,6 @@ function calculateStampDuty() {
     document.getElementById('calculateBtn').classList.add('hidden');
     document.getElementById('calculateAgainBtn').classList.remove('hidden');
     
-    // Show CTA button
-    document.getElementById('ctaLatestRatesBtn').classList.remove('hidden');
-    
     updateSummary(propertyValue, bsd, absd, totalDuty);
 }
 
@@ -239,9 +236,6 @@ function resetCalculator() {
     document.getElementById('summaryResult').classList.add('hidden');
     document.getElementById('calculateBtn').classList.remove('hidden');
     document.getElementById('calculateAgainBtn').classList.add('hidden');
-    
-    // Hide CTA button
-    document.getElementById('ctaLatestRatesBtn').classList.add('hidden');
     
     checkFormCompletion();
 }
@@ -270,37 +264,4 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     checkFormCompletion();
-});
-
-
-function sendHeight() {
-    const height = document.body.scrollHeight + 20;
-    window.parent.postMessage({ type: 'setHeight', height: height }, '*');
-}
-
-const events = ['load', 'resize', 'input', 'change'];
-events.forEach(event => {
-    window.addEventListener(event, sendHeight);
-});
-
-const observer = new MutationObserver(function() {
-    setTimeout(sendHeight, 50);
-});
-observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    characterData: true
-});
-
-window.addEventListener('message', function(event) {
-    if (event.data.type === 'requestHeight') {
-        sendHeight();
-    }
-});
-
-setTimeout(sendHeight, 300);
-
-window.addEventListener('load', function() {
-    setTimeout(sendHeight, 500);
 });
